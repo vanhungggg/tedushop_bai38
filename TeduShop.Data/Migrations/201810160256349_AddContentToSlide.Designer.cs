@@ -7,13 +7,13 @@ namespace TeduShop.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddTagField : IMigrationMetadata
+    public sealed partial class AddContentToSlide : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddTagField));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddContentToSlide));
         
         string IMigrationMetadata.Id
         {
-            get { return "201605162356140_AddTagField"; }
+            get { return "201810160256349_AddContentToSlide"; }
         }
         
         string IMigrationMetadata.Source

@@ -64,25 +64,13 @@
     <Compile Include="Infrastructure\IUnitOfWork.cs" />
     <Compile Include="Infrastructure\RepositoryBase.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
-    <Compile Include="Migrations\201605041425474_InitialDB.cs" />
-    <Compile Include="Migrations\201605041425474_InitialDB.Designer.cs">
-      <DependentUpon>201605041425474_InitialDB.cs</DependentUpon>
+    <Compile Include="Migrations\201810160255099_initial.cs" />
+    <Compile Include="Migrations\201810160255099_initial.Designer.cs">
+      <DependentUpon>201810160255099_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201605070205448_AddErrorTable.cs" />
-    <Compile Include="Migrations\201605070205448_AddErrorTable.Designer.cs">
-      <DependentUpon>201605070205448_AddErrorTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605080451056_Intergrate-AspnetIdentity.cs" />
-    <Compile Include="Migrations\201605080451056_Intergrate-AspnetIdentity.Designer.cs">
-      <DependentUpon>201605080451056_Intergrate-AspnetIdentity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605080507463_Changkey.cs" />
-    <Compile Include="Migrations\201605080507463_Changkey.Designer.cs">
-      <DependentUpon>201605080507463_Changkey.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201605162356140_AddTagField.cs" />
-    <Compile Include="Migrations\201605162356140_AddTagField.Designer.cs">
-      <DependentUpon>201605162356140_AddTagField.cs</DependentUpon>
+    <Compile Include="Migrations\201810160256349_AddContentToSlide.cs" />
+    <Compile Include="Migrations\201810160256349_AddContentToSlide.Designer.cs">
+      <DependentUpon>201810160256349_AddContentToSlide.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -121,20 +109,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201605041425474_InitialDB.resx">
-      <DependentUpon>201605041425474_InitialDB.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810160255099_initial.resx">
+      <DependentUpon>201810160255099_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605070205448_AddErrorTable.resx">
-      <DependentUpon>201605070205448_AddErrorTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605080451056_Intergrate-AspnetIdentity.resx">
-      <DependentUpon>201605080451056_Intergrate-AspnetIdentity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605080507463_Changkey.resx">
-      <DependentUpon>201605080507463_Changkey.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201605162356140_AddTagField.resx">
-      <DependentUpon>201605162356140_AddTagField.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201810160256349_AddContentToSlide.resx">
+      <DependentUpon>201810160256349_AddContentToSlide.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
