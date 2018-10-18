@@ -1,3 +1,8 @@
 {
-    "directory": "Assets/admin/libs"
+  "directory": "Assets/admin/libs",
+  "registry": {
+    "search": [
+      "https://registry.bower.io"
+    ]
+  }
 }
