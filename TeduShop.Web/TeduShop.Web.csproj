@@ -4567,8 +4567,10 @@
     <Content Include="Assets\client\images\ch.jpg" />
     <Content Include="Assets\client\images\facebook.png" />
     <Content Include="Assets\client\images\gpluse.png" />
+    <Content Include="Assets\client\images\hint.gif" />
     <Content Include="Assets\client\images\img-sprite.png" />
     <Content Include="Assets\client\images\label_new.png" />
+    <Content Include="Assets\client\images\loading.gif" />
     <Content Include="Assets\client\images\logo.png" />
     <Content Include="Assets\client\images\pi.jpg" />
     <Content Include="Assets\client\images\pi1.jpg" />
@@ -4977,6 +4979,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Product\Search.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Product\Detail.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
