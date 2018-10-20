@@ -33,7 +33,33 @@ namespace TeduShop.Web.Controllers
 
             List<string> moreImages = new JavaScriptSerializer().Deserialize<List<string>>(viewModel.MoreImages);
             ViewBag.MoreImages = moreImages;
+
+            var tagViewModel = Mapper.Map<IEnumerable<Tag>, IEnumerable<TagViewModel>>(_productService.GetListTagByProductId(id));
+            ViewBag.Tags = tagViewModel;
+
             return View(viewModel);
+        }
+
+        public ActionResult ListByTag(string tagId, int page = 1)
+        {
+            int pageSize = int.Parse(ConfigHelper.GetByKey("PageSize"));
+            int totalRow = 0;
+            var productModel = _productService.GetListProductByTag(tagId, page, pageSize, out totalRow);
+            var productViewModel = Mapper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(productModel);
+
+            int totalPages = (int)Math.Ceiling((double)(totalRow / pageSize));
+
+            ViewBag.Tag = Mapper.Map<Tag, TagViewModel>(_productService.GetTag(tagId));
+
+            PaginationSet<ProductViewModel> paginationSet = new PaginationSet<ProductViewModel>()
+            {
+                Items = productViewModel,
+                MaxPage = int.Parse(ConfigHelper.GetByKey("MaxPage")),
+                Page = page,
+                TotalCount = totalRow,
+                TotalPages = totalPages,
+            };
+            return View(paginationSet);
         }
 
         public ActionResult Category(int id, int page = 1, string sort = "")

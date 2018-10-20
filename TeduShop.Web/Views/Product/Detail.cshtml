@@ -87,6 +87,20 @@
             </div>
             <h6>@Model.Quantity sản phẩm trong kho</h6>
             <p>@Model.Description</p>
+
+            <div class="tag">
+
+                <h5>Tags :</h5>
+                <ul class="tagList">
+
+                    @foreach (var tag in (IEnumerable<TeduShop.Web.Models.TagViewModel>)ViewBag.Tags)
+                    {
+
+                        <li><a href="/tag/@(tag.ID).html">@(tag.Name), </a></li>
+                    }
+                </ul>
+            </div>
+            <div class="clearfix"></div>
             <div class="share">
                 <h5>Chia sẽ :</h5>
                 <ul class="share_nav">
