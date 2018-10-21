@@ -22,6 +22,8 @@ namespace TeduShop.Web.Controllers
             _commonService = commonService;
             _productService = productService;
         }
+
+        [OutputCache(Duration = 60,Location =System.Web.UI.OutputCacheLocation.Server)]//60 giay
         public ActionResult Index()
         {
             var slideModel = _commonService.GetSlides();
@@ -54,10 +56,14 @@ namespace TeduShop.Web.Controllers
         }
 
         [ChildActionOnly]
+        [OutputCache(Duration =3600)]
         public ActionResult Footer()
         {
             var footerModel = _commonService.GetFooter();
             var footerViewModel = Mapper.Map<Footer, FooterViewModel>(footerModel);
+
+            //ViewBag.Time = DateTime.Now.ToString("T");
+
             return PartialView(footerViewModel);
         }
 
@@ -68,6 +74,7 @@ namespace TeduShop.Web.Controllers
         }
 
         [ChildActionOnly]
+        [OutputCache(Duration = 3600)]
         public ActionResult Category()
         {
             var model = _productCategoryService.GetAll();
