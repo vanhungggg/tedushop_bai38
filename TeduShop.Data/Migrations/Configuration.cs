@@ -21,6 +21,7 @@
         {
             CreateProductCategorySample(context);
             CreateSlide(context);
+            CreatePage(context);
             //  This method will be called after migrating to the latest version.
 
 
@@ -103,6 +104,22 @@
                                 <span class=""on-get"">GET NOW</span>"},
                 };
                 context.Slides.AddRange(listSlide);
+                context.SaveChanges();
+            }
+        }
+
+        private void CreatePage(TeduShopDbContext context)
+        {
+            if (context.Pages.Count() == 0)
+            {
+                var page = new Page()
+                {
+                    Name="Giới thiệu.",
+                    Alias = "gioi-thieu",
+                    Content = "Nội dung trang gới thiệu.",
+                    Status = true
+                };
+                context.Pages.Add(page);
                 context.SaveChanges();
             }
         }
