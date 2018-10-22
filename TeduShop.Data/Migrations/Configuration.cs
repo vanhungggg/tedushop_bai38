@@ -22,6 +22,7 @@
             CreateProductCategorySample(context);
             CreateSlide(context);
             CreatePage(context);
+            CreateContactDetail(context);
             //  This method will be called after migrating to the latest version.
 
 
@@ -124,6 +125,25 @@
             }
         }
 
-
+        private void CreateContactDetail(TeduShopDbContext context)
+        {
+            if (context.ContactDetails.Count() == 0)
+            {
+                var contactDetail = new TeduShop.Model.Models.ContactDetail()
+                {
+                    Name="Lu Hanh Saigontourist",
+                    Address="45 Le Thanh Ton, Q.1",
+                    Email="tedu@saigontouris.net",
+                    Lat= 10.7774421,
+                    Lng= 106.6998884,
+                    Phone="0366340357",
+                    Website="saigontourist.net",
+                    Other="",
+                    Status=true
+                };
+                context.ContactDetails.Add(contactDetail);
+                context.SaveChanges();
+            }
+        }
     }
 }
