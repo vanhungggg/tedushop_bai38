@@ -1,0 +1,47 @@
+﻿@model TeduShop.Web.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/Layouts.cshtml";
+}
+
+<div class="register">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+    {
+
+        <div class="  register-top-grid">
+            <h3>Thông Tin Cá Nhân</h3>
+            <div class="mation">
+                <span>Họ tên<label>*</label></span>
+                @Html.TextBoxFor(model => model.FullName)
+
+                <span>Tên đăng nhập<label>*</label></span>
+                @Html.TextBoxFor(model => model.UserName)
+
+                <span>Mật khẩu<label>*</label></span>
+                @Html.PasswordFor(model => model.Password)
+
+                <span>Email<label>*</label></span>
+                @Html.TextBoxFor(model => model.Email)
+
+                <span>Địa chỉ<label>*</label></span>
+                @Html.TextBoxFor(model => model.Address)
+
+                <span>Điện thoại<label>*</label></span>
+                @Html.TextBoxFor(model => model.PhoneNumber)
+
+
+            </div>
+            <div class="register-but">
+                
+                    <input type="submit" value="submit">
+                    <div class="clearfix"> </div>
+                
+            </div>
+
+        </div>
+    }
+
+
+</div>
+

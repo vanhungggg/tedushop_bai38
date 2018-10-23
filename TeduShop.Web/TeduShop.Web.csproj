@@ -237,6 +237,7 @@
     <Compile Include="Models\ProductCategoryViewModel.cs" />
     <Compile Include="Models\ProductTagViewModel.cs" />
     <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\SlideViewModel.cs" />
     <Compile Include="Models\TagViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -4648,7 +4649,6 @@
     <Folder Include="Assets\admin\js\pages\" />
     <Folder Include="UploadedFiles\" />
     <Folder Include="Views\About\" />
-    <Folder Include="Views\Account\" />
     <Folder Include="Views\Post\" />
   </ItemGroup>
   <ItemGroup>
@@ -5005,6 +5005,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Contact\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
