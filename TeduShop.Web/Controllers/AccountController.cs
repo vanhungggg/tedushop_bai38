@@ -1,8 +1,11 @@
 ﻿using BotDetect.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -52,9 +55,41 @@ namespace TeduShop.Web.Controllers
             }
         }
         // GET: Account
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
+            ViewBag.returnUrl = returnUrl;
             return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = _userManager.Find(model.UserName, model.Password);
+                if (user != null)
+                {
+                    IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+                    authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+                    ClaimsIdentity identity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                    AuthenticationProperties props = new AuthenticationProperties();
+                    props.IsPersistent = model.RememberMe;
+                    authenticationManager.SignIn(props, identity);
+                    if (Url.IsLocalUrl(returnUrl))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
+                }
+            }
+            return View(model);
         }
 
         [HttpGet]
@@ -69,7 +104,7 @@ namespace TeduShop.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var userEmail =await _userManager.FindByEmailAsync(registerViewModel.Email);
+                var userEmail = await _userManager.FindByEmailAsync(registerViewModel.Email);
 
                 if (userEmail != null)
                 {
@@ -77,7 +112,7 @@ namespace TeduShop.Web.Controllers
                     return View(registerViewModel);
                 }
 
-                var userName =await _userManager.FindByNameAsync(registerViewModel.UserName);
+                var userName = await _userManager.FindByNameAsync(registerViewModel.UserName);
 
                 if (userName != null)
                 {
@@ -103,12 +138,12 @@ namespace TeduShop.Web.Controllers
 
                 if (adminUser != null)
                 {
-                    await _userManager.AddToRolesAsync(adminUser.Id, new string[] {"User" });
+                    await _userManager.AddToRolesAsync(adminUser.Id, new string[] { "User" });
                 }
 
                 string content = System.IO.File.ReadAllText(Server.MapPath("/Assets/client/template/newuser.html"));
                 content = content.Replace("{{UserName}}", adminUser.UserName);
-                content = content.Replace("{{Link}}", ConfigHelper.GetByKey("CurrentLink")+"dang-nhap.html");
+                content = content.Replace("{{Link}}", ConfigHelper.GetByKey("CurrentLink") + "dang-nhap.html");
                 MailHelper.SendMail(adminUser.Email, "Đăng ký thành công", content);
 
                 ViewData["SuccessMsg"] = "đăng ký thành công.";
