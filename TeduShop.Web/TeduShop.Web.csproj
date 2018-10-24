@@ -4627,6 +4627,7 @@
     <Content Include="Assets\client\js\jquery.min.js" />
     <Content Include="Assets\client\js\jquery.wmuSlider.js" />
     <Content Include="Assets\client\template\contact_template.html" />
+    <Content Include="Assets\client\template\newuser.html" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Libs\CKFinder.dll" />
