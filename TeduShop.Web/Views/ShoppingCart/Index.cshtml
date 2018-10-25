@@ -1,0 +1,42 @@
+﻿@model TeduShop.Web.Models.ShoppingCartViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Layouts.cshtml";
+}
+
+
+<div class=" single_top">
+    <div class="single_grid">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td>STT</td>
+                    <td>Tên sản phẩm</td>
+                    <td>Hình ảnh</td>
+                    <td>Giá</td>
+                    <td>Số lượng</td>
+                    <td>Thành tiền</td>
+                    <td>#</td>
+                </tr>
+            </thead>
+            <tbody id="cartBody">
+                
+            </tbody>
+        </table>
+        <div class="clearfix"> </div>
+    </div>
+
+</div>
+
+<script id="tblCart" type="x-tmpl-mustache">
+    <tr>
+        <td>{{ProductId}}</td>
+        <td>{{ProductName}}</td>
+        <td><img src="{{Image}}" alt="{{ProductName}}" class="img-responsive" /></td>
+        <td>{{Price}}</td>
+        <td><input class="input" data-id="{{ProductId}}" value="{{Quantity}}" type="number" /></td>
+        <td>{{Amount}}</td>
+        <td><button class="btn btn-danger btnDeleteItem" data-id="{{ProductId}}"><i class="fa fa-close"></i></button></td>
+    </tr>
+</script>
