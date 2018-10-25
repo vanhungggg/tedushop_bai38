@@ -9,8 +9,9 @@
     <div class=" login-right">
         <h3>REGISTERED CUSTOMERS</h3>
         <p>If you have an account with us, please log in.</p>
-        @using (Html.BeginForm("Login", "Account",new { returnUrl= ViewBag.returnUrl }, FormMethod.Post))
+        @using (Html.BeginForm("Login", "Account", new { returnUrl = ViewBag.returnUrl }, FormMethod.Post))
         {
+            @Html.ValidationSummary(false, "", new { @class = "text-danger" });
             <div>
                 <span>Tài khoản<label>*</label></span>
                 @Html.TextBoxFor(model => model.UserName)

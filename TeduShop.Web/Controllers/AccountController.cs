@@ -20,11 +20,6 @@ namespace TeduShop.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
-        public AccountController()
-        {
-        }
-
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -73,6 +68,7 @@ namespace TeduShop.Web.Controllers
                     authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
                     ClaimsIdentity identity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationProperties props = new AuthenticationProperties();
+
                     props.IsPersistent = model.RememberMe;
                     authenticationManager.SignIn(props, identity);
                     if (Url.IsLocalUrl(returnUrl))
@@ -90,6 +86,15 @@ namespace TeduShop.Web.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOut()
+        {
+            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
