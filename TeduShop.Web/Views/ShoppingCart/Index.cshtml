@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/Layouts.cshtml";
 }
 
-
 <div class=" single_top">
     <div class="single_grid">
         <table class="table table-hover">
@@ -20,23 +19,23 @@
                     <td>#</td>
                 </tr>
             </thead>
-            <tbody id="cartBody">
-                
-            </tbody>
+            <tbody id="cartBody"></tbody>
         </table>
+        <div class="pull-right">
+            Tổng tiền: <span id="lblTotalOrder"></span>
+        </div>
         <div class="clearfix"> </div>
     </div>
-
 </div>
 
 <script id="tblCart" type="x-tmpl-mustache">
     <tr>
         <td>{{ProductId}}</td>
         <td>{{ProductName}}</td>
-        <td><img src="{{Image}}" alt="{{ProductName}}" class="img-responsive" /></td>
-        <td>{{Price}}</td>
-        <td><input class="input" data-id="{{ProductId}}" value="{{Quantity}}" type="number" /></td>
-        <td>{{Amount}}</td>
-        <td><button class="btn btn-danger btnDeleteItem" data-id="{{ProductId}}"><i class="fa fa-close"></i></button></td>
+        <td><img src="{{Image}}" alt="{{ProductName}}" height="100" /></td>
+        <td>{{PriceF}}</td>
+        <td><input class="input form-control txtQuantity" data-price="{{Price}}" data-id="{{ProductId}}" value="{{Quantity}}" type="number" /></td>
+        <td id="amount_{{ProductId}}">{{Amount}}</td>
+        <td><button class="btn btn-danger btnDeleteItem" data-quantity="{{Quantity}}" data-price="{{Price}}" data-id="{{ProductId}}"><i class="fa fa-close"></i></button></td>
     </tr>
 </script>
