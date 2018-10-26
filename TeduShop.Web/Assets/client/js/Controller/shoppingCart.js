@@ -11,8 +11,8 @@
             var productId = parseInt($(this).data('id'));
             cart.addItem(productId);
         });
-        $('.btnDeleteItem').off('click').on('click', function () {
-
+        $('.btnDeleteItem').off('click').on('click', function (e) {
+            e.preventDefault();
             var productId = parseInt($(this).data('id'));
             //var quantity = parseInt($(this).data('quantity'));
             //var price = parseFloat($(this).data('price'));
@@ -35,7 +35,40 @@
             $('#lblTotalOrder').text(numeral(cart.getTotalOrder()).format('0,0'));
         });
 
+        $('#btnContinue').off('click').on('click', function () {
+            window.location.href = "/";
+        });
+
+        $('#btnCheckOut').off('click').on('click', function () {
+            $('#divCheckout').show();
+        });
+
+        $('#btnDeleteAll').off('click').on('click', function () {
+            cart.deleteAll();
+        });
+
+        $('#chkUserLoginInfo').off('click').on('click', function () {
+            cart.getLoginUser();
+        });
         
+    },
+
+    getLoginUser: function (id) {
+        $.ajax({
+            url: '/ShoppingCart/GetUser',
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    var user = response.data;
+
+                    $('#txtName').val(user.FullName);
+                    $('#txtAddress').val(user.Address);
+                    $('#txtEmail').val(user.Email);
+                    $('#txtPhone').val(user.PhoneNumber);
+                }
+            }
+        });
     },
 
     getTotalOrder: function () {
@@ -62,6 +95,20 @@
             }
         });
     },
+    deleteAll: function () {
+        $.ajax({
+            url: '/ShoppingCart/DeleteAll',
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    alert('XÓa giỏ hàng thành công.');
+                    cart.loadData();
+                }
+            }
+        });
+    },
+
 
     deleteItem: function (id) {
         $.ajax({
@@ -101,6 +148,9 @@
 
                     });
                     $('#cartBody').html(html);
+                    if (html == '') {
+                        $('#cartContent').html('Không có sản phẩm nào trong giỏ hàng.');
+                    }
                     $('#lblTotalOrder').text(numeral(cart.getTotalOrder()).format('0,0'));
                     cart.registerEvent();
                 }

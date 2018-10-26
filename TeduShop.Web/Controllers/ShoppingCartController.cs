@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -6,6 +7,7 @@ using System.Web.Script.Serialization;
 using TeduShop.Common;
 using TeduShop.Model.Models;
 using TeduShop.Service;
+using TeduShop.Web.App_Start;
 using TeduShop.Web.Models;
 
 namespace TeduShop.Web.Controllers
@@ -13,10 +15,12 @@ namespace TeduShop.Web.Controllers
     public class ShoppingCartController : Controller
     {
         private IProductService _productService;
+        private ApplicationUserManager _applicationUser;
 
-        public ShoppingCartController(IProductService productService)
+        public ShoppingCartController(IProductService productService, ApplicationUserManager applicationUserManager)
         {
             _productService = productService;
+            _applicationUser = applicationUserManager;
         }
 
         // GET: ShoppingCart
@@ -25,6 +29,31 @@ namespace TeduShop.Web.Controllers
             if (Session[CommonConstants.SessionCart] == null)
                 Session[CommonConstants.SessionCart] = new List<ShoppingCartViewModel>();
             return View();
+        }
+
+        public ActionResult CheckOut()
+        {
+            if (Session[CommonConstants.SessionCart] == null)
+                return Redirect("/gio-hang.html");
+            return View();
+        }
+
+        public JsonResult GetUser()
+        {
+            if (Request.IsAuthenticated)
+            {
+                var userId = User.Identity.GetUserId();
+                var user = _applicationUser.FindById(userId);
+                return Json(new
+                {
+                    status = true,
+                    data = user
+                });
+            }
+            return Json(new
+            {
+                status = false
+            });
         }
 
         public JsonResult GetAll()
