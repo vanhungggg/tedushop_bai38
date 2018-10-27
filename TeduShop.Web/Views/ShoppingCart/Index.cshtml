@@ -39,17 +39,20 @@
             <div class=" contact_right">
                 <h3>Thanh toán</h3>
                 <div class="contact-form">
-                    <form method="post" action="contact-post.html">
-                        <label>
-                            <input type="checkbox" id="chkUserLoginInfo" />
-                            Sử dụng thông tin đăng nhập.
-                        </label>
+                    <form method="post">
+                        @if (Request.IsAuthenticated)
+                        {
+                            <label>
+                                <input type="checkbox" id="chkUserLoginInfo" />
+                                Sử dụng thông tin đăng nhập.
+                            </label>
+                        }
                         <input type="text" class="textbox" id="txtName" placeholder="Họ tên">
                         <input type="text" class="textbox" id="txtAddress" placeholder="địa chỉ">
                         <input type="text" class="textbox" id="txtEmail" placeholder="Email">
                         <input type="text" class="textbox" id="txtPhone" placeholder="Điện thoại">
                         <textarea value="Message" id="txtMessage">Message</textarea>
-                        <input type="submit" value="Thanh toán">
+                        <input type="button" id="btnCreateOrder" value="Thanh toán">
                         <div class="clearfix"> </div>
                     </form>
 

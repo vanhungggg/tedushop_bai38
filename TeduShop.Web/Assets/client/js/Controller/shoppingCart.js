@@ -19,7 +19,6 @@
 
             //$('#lblTotalOrder').text(cart.getTotalOrder() - price * quantity);
             cart.deleteItem(productId);
-
         });
         $('.txtQuantity').off('keyup').on('keyup', function () {//keypress: bam'+enter, keydown: bam' xuong', keyup:bam'
             var productId = parseInt($(this).data('id'));
@@ -33,6 +32,8 @@
                 $('#amount_' + productId).text(0);
             }
             $('#lblTotalOrder').text(numeral(cart.getTotalOrder()).format('0,0'));
+
+            cart.updateAll();//moi lan keyup-->cap nhat vo session.
         });
 
         $('#btnContinue').off('click').on('click', function () {
@@ -48,9 +49,19 @@
         });
 
         $('#chkUserLoginInfo').off('click').on('click', function () {
-            cart.getLoginUser();
+            if ($('#chkUserLoginInfo').prop('checked'))
+                cart.getLoginUser();
+            else {
+                $('#txtName').val('');
+                $('#txtAddress').val('');
+                $('#txtEmail').val('');
+                $('#txtPhone').val('');
+            }
         });
-        
+
+        $('#btnCreateOrder').off('click').on('click', function () {
+            cart.createOrder();
+        });
     },
 
     getLoginUser: function (id) {
@@ -71,12 +82,41 @@
         });
     },
 
+    createOrder: function (id) {
+        var order = {
+            CustomerName: $('#txtName').val(),
+            CustomerAddress: $('#txtAddress').val(),
+            CustomerEmail: $('#txtEmail').val(),
+            CustomerMobile: $('#txtPhone').val(),
+            CustomerMessage: $('#txtMessage').val(),
+            PaymentMethod: "Thanh toán tiền mặt",
+            Status: false
+        }
+        $.ajax({
+            url: '/ShoppingCart/CreateOrder',
+            type: 'POST',
+            data: {
+                orderViewModel: JSON.stringify(order)
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    $('#divCheckOut').hide();
+                    cart.deleteAll();
+                    setTimeout(function () {
+                        $('#cartContent').html('Cảm ơn bạn đã đặt hàng. chúng tôi sẽ liên hệ lại sớm nhất có thể.');
+                    }, 2000);
+
+                }
+            }
+        });
+    },
+
     getTotalOrder: function () {
         var listTextBox = $('.txtQuantity');
         var total = 0;
         $.each(listTextBox, function (i, item) {
             total += parseInt($(item).val()) * parseFloat($(item).data('price'));
-
         });
         return total;
     },
@@ -102,13 +142,35 @@
             dataType: 'json',
             success: function (response) {
                 if (response.status) {
-                    alert('XÓa giỏ hàng thành công.');
                     cart.loadData();
                 }
             }
         });
     },
 
+    updateAll: function () {
+        var cartList = [];
+        $.each($('.txtQuantity'), function (i, item) {
+            cartList.push({
+                ProductId: $(item).data('id'),
+                Quantity: $(item).val()
+            });
+        });
+        $.ajax({
+            url: '/ShoppingCart/Update',
+            type: 'POST',
+            data: {
+                cartData: JSON.stringify(cartList)
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.status) {
+                    alert('Cập nhật giỏ hàng thành công.');
+                    cart.loadData();
+                }
+            }
+        });
+    },
 
     deleteItem: function (id) {
         $.ajax({
@@ -145,7 +207,6 @@
                             Quantity: item.Quantity,
                             Amount: numeral(item.Quantity * item.Product.Price).format('0,0')
                         });
-
                     });
                     $('#cartBody').html(html);
                     if (html == '') {

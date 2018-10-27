@@ -8,6 +8,7 @@ using TeduShop.Common;
 using TeduShop.Model.Models;
 using TeduShop.Service;
 using TeduShop.Web.App_Start;
+using TeduShop.Web.Infrastructure.Extensions;
 using TeduShop.Web.Models;
 
 namespace TeduShop.Web.Controllers
@@ -16,11 +17,13 @@ namespace TeduShop.Web.Controllers
     {
         private IProductService _productService;
         private ApplicationUserManager _applicationUser;
+        private IOrderService _orderService;
 
-        public ShoppingCartController(IProductService productService, ApplicationUserManager applicationUserManager)
+        public ShoppingCartController(IProductService productService,IOrderService orderService, ApplicationUserManager applicationUserManager)
         {
             _productService = productService;
             _applicationUser = applicationUserManager;
+            _orderService = orderService;
         }
 
         // GET: ShoppingCart
@@ -53,6 +56,39 @@ namespace TeduShop.Web.Controllers
             return Json(new
             {
                 status = false
+            });
+        }
+
+        public JsonResult CreateOrder(string orderViewModel)
+        {
+            var order = new JavaScriptSerializer().Deserialize<OrderViewModel>(orderViewModel);
+            var newOrder = new Order();
+            newOrder.UpdateOrder(order);
+
+            if (Request.IsAuthenticated)
+            {
+                newOrder.CustomerId = User.Identity.GetUserId();
+                newOrder.CreatedBy = User.Identity.GetUserName();
+            }
+
+            //lay OrderDetail
+            var cart = (List<ShoppingCartViewModel>)Session[CommonConstants.SessionCart];
+            List<OrderDetail> orderDetails = new List<OrderDetail>();
+            foreach (var item in cart)
+            {
+                var detail = new OrderDetail();
+                detail.ProductID = item.ProductId;
+                detail.Quantitty = item.Quantity;
+                orderDetails.Add(detail);
+            }
+            newOrder.OrderDetails = orderDetails;
+            /////////////////////
+
+            _orderService.Create(newOrder);
+
+            return Json(new
+            {
+                status = true
             });
         }
 
