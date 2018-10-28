@@ -4,7 +4,42 @@
         cart.registerEvent();
     },
     registerEvent: function () {
-        //(cart.getTotalOrder() == null ? '0' : $('#lblTotalOrder').text(cart.getTotalOrder()));
+        /////////////// validate /////////////////////////////
+        $('#frmPayment').validate({
+            rules: {
+                name: {
+                    required: true
+                },
+                address: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                phone: {
+                    required: true,
+                    number: true
+                }
+            },
+            messages:{
+                name: {
+                    required: "Bạn phải nhập tên."
+                },
+                address: {
+                    required: "Bạn phải nhập địa chỉ."
+                },
+                email: {
+                    required: "Bạn phải nhập email",
+                    email: "email không đúng định dạng"
+                },
+                phone: {
+                    required: "Bạn phải nhập điện thoại.",
+                    number: "Trường này phải là số."
+                }
+            }
+        });
+        /////////////// validate /////////////////////////////
 
         $('.btnAddToCart').off('click').on('click', function (e) {
             e.preventDefault();
@@ -60,7 +95,10 @@
         });
 
         $('#btnCreateOrder').off('click').on('click', function () {
-            cart.createOrder();
+            var isValid = $('#frmPayment').valid();
+            if (isValid) {
+                cart.createOrder();
+            }
         });
     },
 
