@@ -95,31 +95,56 @@ namespace TeduShop.Web.Infrastructure.Extensions
             product.MetaDescription = productVm.MetaDescription;
             product.Status = productVm.Status;
             product.Tags = productVm.Tags;
-
             product.Quantity = productVm.Quantity;
         }
 
-        public static void UpdateFeedback(this Feedback feedback, FeedbackViewModel feedbackViewModel)
+        public static void UpdateFeedback(this Feedback feedback, FeedbackViewModel feedbackVm)
         {
-            feedback.Name = feedbackViewModel.Name;
-            feedback.Email = feedbackViewModel.Email;
-            feedback.Message = feedbackViewModel.Message;
+            feedback.Name = feedbackVm.Name;
+            feedback.Email = feedbackVm.Email;
+            feedback.Message = feedbackVm.Message;
+            feedback.Status = feedbackVm.Status;
             feedback.CreatedDate = DateTime.Now;
-            feedback.Status = feedbackViewModel.Status;
         }
 
-        public static void UpdateOrder(this Order order, OrderViewModel orderViewModel)
+        public static void UpdateOrder(this Order order, OrderViewModel orderVm)
         {
-            order.CustomerName = orderViewModel.CustomerName;
-            order.CustomerAddress = orderViewModel.CustomerAddress;
-            order.CustomerEmail = orderViewModel.CustomerEmail;
-            order.CustomerMobile = orderViewModel.CustomerMobile;
-            order.CustomerMessage = orderViewModel.CustomerMessage;
-            order.PaymentMethod = orderViewModel.PaymentMethod;
+            order.CustomerName = orderVm.CustomerName;
+            order.CustomerAddress = orderVm.CustomerName;
+            order.CustomerEmail = orderVm.CustomerName;
+            order.CustomerMobile = orderVm.CustomerName;
+            order.CustomerMessage = orderVm.CustomerName;
+            order.PaymentMethod = orderVm.CustomerName;
             order.CreatedDate = DateTime.Now;
-            order.CreatedBy = orderViewModel.CreatedBy;
-            order.Status = orderViewModel.Status;
-            order.CustomerId = orderViewModel.CustomerId;
+            order.CreatedBy = orderVm.CreatedBy;
+            order.Status = orderVm.Status;
+            order.CustomerId = orderVm.CustomerId;
+        }
+
+        public static void UpdateApplicationGroup(this ApplicationGroup appGroup, ApplicationGroupViewModel appGroupViewModel)
+        {
+            appGroup.ID = appGroupViewModel.ID;
+            appGroup.Name = appGroupViewModel.Name;
+        }
+
+        public static void UpdateApplicationRole(this ApplicationRole appRole, ApplicationRoleViewModel appRoleViewModel, string action = "add")
+        {
+            if (action == "update")
+                appRole.Id = appRoleViewModel.Id;
+            else
+                appRole.Id = Guid.NewGuid().ToString();
+            appRole.Name = appRoleViewModel.Name;
+            appRole.Description = appRoleViewModel.Description;
+        }
+        public static void UpdateUser(this ApplicationUser appUser, ApplicationUserViewModel appUserViewModel, string action = "add")
+        {
+
+            appUser.Id = appUserViewModel.Id;
+            appUser.FullName = appUserViewModel.FullName;
+            appUser.BirthDay = appUserViewModel.BirthDay;
+            appUser.Email = appUserViewModel.Email;
+            appUser.UserName = appUserViewModel.UserName;
+            appUser.PhoneNumber = appUserViewModel.PhoneNumber;
         }
     }
 }

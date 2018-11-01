@@ -1,6 +1,6 @@
 {
-	"name": "ASP.NET",
-	"private": true,
+  "name": "ASP.NET",
+  "private": true,
   "dependencies": {
     "angular": "~1.5.5",
     "angular-ui-router": "~0.2.18",
@@ -18,7 +18,10 @@
     "jquery-ui": "~1.12.1",
     "mustache": "~3.0.0",
     "numeral": "~2.0.6",
-    "jquery-validation": "~1.18.0"
-    
+    "jquery-validation": "~1.18.0",
+    "checklist-model": "~1.0.0"
+  },
+  "resolutions": {
+    "angular": "^1.0.8"
   }
 }

@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TeduShop.Model.Models;
 
 namespace TeduShop.Data
@@ -41,6 +36,10 @@ namespace TeduShop.Data
         public DbSet<ContactDetail> ContactDetails { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
 
+        public DbSet<ApplicationGroup> ApplicationGroups { get; set; }
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<ApplicationRoleGroup> ApplicationRoleGroups { get; set; }
+        public DbSet<ApplicationUserGroup> ApplicationUserGroups { get; set; }
 
         public static TeduShopDbContext Create()
         {
@@ -49,8 +48,11 @@ namespace TeduShop.Data
 
         protected override void OnModelCreating(DbModelBuilder builder)
         {
-            builder.Entity<IdentityUserRole>().HasKey(i => new { i.UserId, i.RoleId });
-            builder.Entity<IdentityUserLogin>().HasKey(i => i.UserId);
+            //rename bang Identity... => application...
+            builder.Entity<IdentityUserRole>().HasKey(i => new { i.UserId, i.RoleId }).ToTable("ApplicationUserRoles");// đăt ten bang cho IdentityUserRole
+            builder.Entity<IdentityUserLogin>().HasKey(i => i.UserId).ToTable("ApplicationUserLogins");// đăt ten bang cho IdentityUserLogin
+            builder.Entity<IdentityRole>().ToTable("ApplicationRoles");
+            builder.Entity<IdentityUserClaim>().HasKey(i => i.UserId).ToTable("ApplicationUserClaims");
         }
     }
 }

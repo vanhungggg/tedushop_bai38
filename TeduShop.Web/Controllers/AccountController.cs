@@ -1,5 +1,6 @@
 ﻿using BotDetect.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System;
@@ -20,6 +21,7 @@ namespace TeduShop.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
@@ -49,15 +51,19 @@ namespace TeduShop.Web.Controllers
                 _userManager = value;
             }
         }
+        public AccountController()
+        {
+
+        }
         // GET: Account
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.returnUrl = returnUrl;
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model,string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +74,6 @@ namespace TeduShop.Web.Controllers
                     authenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
                     ClaimsIdentity identity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationProperties props = new AuthenticationProperties();
-
                     props.IsPersistent = model.RememberMe;
                     authenticationManager.SignIn(props, identity);
                     if (Url.IsLocalUrl(returnUrl))
@@ -77,7 +82,7 @@ namespace TeduShop.Web.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index","Home");
                     }
                 }
                 else
@@ -88,14 +93,6 @@ namespace TeduShop.Web.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOut()
-        {
-            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
-            authenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
-        }
 
         [HttpGet]
         public ActionResult Register()
@@ -104,59 +101,63 @@ namespace TeduShop.Web.Controllers
         }
 
         [HttpPost]
-        [CaptchaValidation("CaptchaCode", "registerCaptcha", "Mã xác nhận không đúng!")]
-        public async Task<ActionResult> Register(RegisterViewModel registerViewModel)
+        [CaptchaValidation("CaptchaCode", "registerCaptcha", "Mã xác nhận không đúng")]
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var userEmail = await _userManager.FindByEmailAsync(registerViewModel.Email);
-
-                if (userEmail != null)
+                var userByEmail = await _userManager.FindByEmailAsync(model.Email);
+                if (userByEmail != null)
                 {
-                    ModelState.AddModelError("", "Email đã tồn tại.");
-                    return View(registerViewModel);
+                    ModelState.AddModelError("email", "Email đã tồn tại");
+                    return View(model);
                 }
-
-                var userName = await _userManager.FindByNameAsync(registerViewModel.UserName);
-
-                if (userName != null)
+                var userByUserName = await _userManager.FindByNameAsync(model.UserName);
+                if (userByUserName != null)
                 {
-                    ModelState.AddModelError("", "Username đã tồn tại.");
-                    return View(registerViewModel);
+                    ModelState.AddModelError("email", "Tài khoản đã tồn tại");
+                    return View(model);
                 }
-
                 var user = new ApplicationUser()
                 {
-                    UserName = registerViewModel.UserName,
-                    Email = registerViewModel.Email,
+                    UserName = model.UserName,
+                    Email = model.Email,
                     EmailConfirmed = true,
                     BirthDay = DateTime.Now,
-                    FullName = registerViewModel.FullName,
-                    PhoneNumber = registerViewModel.PhoneNumber,
-                    Address = registerViewModel.Address
+                    FullName = model.FullName,
+                    PhoneNumber = model.PhoneNumber,
+                    Address = model.Address
 
                 };
 
-                await _userManager.CreateAsync(user, registerViewModel.Password);
+                await _userManager.CreateAsync(user, model.Password);
 
-                var adminUser = await _userManager.FindByEmailAsync(registerViewModel.Email);
 
+                var adminUser = await _userManager.FindByEmailAsync(model.Email);
                 if (adminUser != null)
-                {
                     await _userManager.AddToRolesAsync(adminUser.Id, new string[] { "User" });
-                }
 
                 string content = System.IO.File.ReadAllText(Server.MapPath("/Assets/client/template/newuser.html"));
-                content = content.Replace("{{UserName}}", adminUser.UserName);
+                content = content.Replace("{{UserName}}", adminUser.FullName);
                 content = content.Replace("{{Link}}", ConfigHelper.GetByKey("CurrentLink") + "dang-nhap.html");
+
                 MailHelper.SendMail(adminUser.Email, "Đăng ký thành công", content);
 
-                ViewData["SuccessMsg"] = "đăng ký thành công.";
 
+                ViewData["SuccessMsg"] = "Đăng ký thành công";
             }
 
-
             return View();
+        }
+
+        [HttpPost]
+
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOut()
+        {
+            IAuthenticationManager authenticationManager = HttpContext.GetOwinContext().Authentication;
+            authenticationManager.SignOut();
+            return RedirectToAction("Index","Home");
         }
     }
 }
