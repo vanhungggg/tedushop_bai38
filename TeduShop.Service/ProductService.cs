@@ -32,6 +32,7 @@ namespace TeduShop.Service
         IEnumerable<string> GetListProductByName(string name);
 
         Product GetById(int id);
+
         Tag GetTag(string tagid);
 
         void Save();
@@ -41,6 +42,8 @@ namespace TeduShop.Service
         void Increaseview(int id);
 
         IEnumerable<Product> GetListProductByTag(string tagId, int page, int pageSize, out int totalRow);
+
+        bool SellProduct(int productId, int quantity);
     }
 
     public class ProductService : IProductService
@@ -218,6 +221,16 @@ namespace TeduShop.Service
             query = query.Skip((page - 1) * pageSize).Take(pageSize);
 
             return query;
+        }
+
+        //Selling product
+        public bool SellProduct(int productId, int quantity)
+        {
+            var product = _productRepository.GetSingleById(productId);
+            if (product.Quantity < quantity)
+                return false;
+            product.Quantity -= quantity;
+            return true;
         }
 
         public void Update(Product Product)

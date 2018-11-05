@@ -100,6 +100,22 @@
     <Compile Include="Migrations\201810280615468_AddGroupUser.Designer.cs">
       <DependentUpon>201810280615468_AddGroupUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811010752326_ChangeOrderDetail.cs" />
+    <Compile Include="Migrations\201811010752326_ChangeOrderDetail.Designer.cs">
+      <DependentUpon>201811010752326_ChangeOrderDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811010800561_ChangeProduct.cs" />
+    <Compile Include="Migrations\201811010800561_ChangeProduct.Designer.cs">
+      <DependentUpon>201811010800561_ChangeProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811020140038_ChangeOrderDetail1.cs" />
+    <Compile Include="Migrations\201811020140038_ChangeOrderDetail1.Designer.cs">
+      <DependentUpon>201811020140038_ChangeOrderDetail1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811020228561_RevenuesStatictisSP.cs" />
+    <Compile Include="Migrations\201811020228561_RevenuesStatictisSP.Designer.cs">
+      <DependentUpon>201811020228561_RevenuesStatictisSP.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ApplicationGroupRepository.cs" />
@@ -169,6 +185,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201810280615468_AddGroupUser.resx">
       <DependentUpon>201810280615468_AddGroupUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811010752326_ChangeOrderDetail.resx">
+      <DependentUpon>201811010752326_ChangeOrderDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811010800561_ChangeProduct.resx">
+      <DependentUpon>201811010800561_ChangeProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811020140038_ChangeOrderDetail1.resx">
+      <DependentUpon>201811020140038_ChangeOrderDetail1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811020228561_RevenuesStatictisSP.resx">
+      <DependentUpon>201811020228561_RevenuesStatictisSP.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

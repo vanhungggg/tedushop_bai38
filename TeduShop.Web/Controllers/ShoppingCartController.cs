@@ -19,7 +19,7 @@ namespace TeduShop.Web.Controllers
         private ApplicationUserManager _applicationUser;
         private IOrderService _orderService;
 
-        public ShoppingCartController(IProductService productService,IOrderService orderService, ApplicationUserManager applicationUserManager)
+        public ShoppingCartController(IProductService productService, IOrderService orderService, ApplicationUserManager applicationUserManager)
         {
             _productService = productService;
             _applicationUser = applicationUserManager;
@@ -74,22 +74,37 @@ namespace TeduShop.Web.Controllers
             //lay OrderDetail
             var cart = (List<ShoppingCartViewModel>)Session[CommonConstants.SessionCart];
             List<OrderDetail> orderDetails = new List<OrderDetail>();
+            bool isEnough = true;
             foreach (var item in cart)
             {
                 var detail = new OrderDetail();
                 detail.ProductID = item.ProductId;
-                detail.Quantitty = item.Quantity;
+                detail.Quantity = item.Quantity;
+                detail.Price = item.Product.Price;
                 orderDetails.Add(detail);
+                isEnough = _productService.SellProduct(item.ProductId, item.Quantity);
+                break;//ra ngoai kiem tra
             }
             newOrder.OrderDetails = orderDetails;
             /////////////////////
-
-            _orderService.Create(newOrder);
-
-            return Json(new
+            if (isEnough)
             {
-                status = true
-            });
+                _orderService.Create(newOrder);
+                _productService.Save();
+
+                return Json(new
+                {
+                    status = true
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    status = false,
+                    message = "Không đủ hàng"
+                });
+            }
         }
 
         public JsonResult GetAll()
@@ -108,10 +123,18 @@ namespace TeduShop.Web.Controllers
         public JsonResult Add(int productId)
         {
             var cart = (List<ShoppingCartViewModel>)Session[CommonConstants.SessionCart];
-
+            Product product = _productService.GetById(productId);
             if (cart == null)
             {
                 cart = new List<ShoppingCartViewModel>();
+            }
+
+            if (product.Quantity == 0)
+            {
+                return Json(new {
+                    status = false,
+                    message = "Sản phẩm này đăng hết hàng."
+                });
             }
 
             if (cart.Any(x => x.ProductId == productId))
@@ -126,7 +149,7 @@ namespace TeduShop.Web.Controllers
             {
                 ShoppingCartViewModel shoppingCartViewModel = new ShoppingCartViewModel();
                 shoppingCartViewModel.ProductId = productId;
-                Product product = _productService.GetById(productId);
+               
 
                 shoppingCartViewModel.Product = Mapper.Map<Product, ProductViewModel>(product);
                 shoppingCartViewModel.Quantity = 1;

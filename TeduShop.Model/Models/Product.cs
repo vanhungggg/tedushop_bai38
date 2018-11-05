@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml.Linq;
 using TeduShop.Model.Abstract;
 
 namespace TeduShop.Model.Models
@@ -38,6 +36,7 @@ namespace TeduShop.Model.Models
 
         [MaxLength(500)]
         public string Description { set; get; }
+
         public string Content { set; get; }
 
         public bool? HomeFlag { set; get; }
@@ -47,6 +46,8 @@ namespace TeduShop.Model.Models
         public string Tags { set; get; }
 
         public int Quantity { set; get; }
+
+        public decimal OriginalPrice { get; set; }
 
         [ForeignKey("CategoryID")]
         public virtual ProductCategory ProductCategory { set; get; }

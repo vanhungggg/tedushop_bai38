@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TeduShop.Common.ViewModel;
 using TeduShop.Data.Infrastructure;
 using TeduShop.Data.Repositories;
 using TeduShop.Model.Models;
@@ -37,7 +38,7 @@ namespace TeduShop.Service
                     orderDetail.OrderID = order.ID;
                     _orderdetailRepository.Add(orderDetail);
                 }
-                _unitOfWork.Commit();
+                //_unitOfWork.Commit();
 
                 return true;
             }
@@ -47,5 +48,6 @@ namespace TeduShop.Service
                 throw ex;
             }
         }
+
     }
 }
